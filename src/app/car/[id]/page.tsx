@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, CarFront, CheckCircle2, ShieldCheck, Phone, Globe, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -144,16 +145,22 @@ export default function CarDetailsPage() {
             <section className="relative group">
               <div className="aspect-[16/9] bg-gray-100 overflow-hidden rounded-sm">
                 <AnimatePresence mode="wait">
-                  <motion.img
+                  <motion.div
                     key={activeImage}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.5 }}
-                    src={car.media?.photo_links?.[activeImage] || ""}
-                    alt={car.heading}
-                    className="w-full h-full object-cover"
-                  />
+                    className="relative w-full h-full"
+                  >
+                    <Image
+                      src={car.media?.photo_links?.[activeImage] || ""}
+                      alt={car.heading}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
+                  </motion.div>
                 </AnimatePresence>
               </div>
 
@@ -179,7 +186,13 @@ export default function CarDetailsPage() {
                         onClick={() => setActiveImage(idx)}
                         className={`relative w-32 aspect-[3/2] shrink-0 overflow-hidden rounded-sm border-2 transition-all ${activeImage === idx ? 'border-black' : 'border-transparent opacity-40 hover:opacity-100'}`}
                       >
-                        <img src={link} alt="Thumbnail" className="w-full h-full object-cover" />
+                        <Image 
+                          src={link} 
+                          alt={`Thumbnail ${idx + 1}`} 
+                          fill 
+                          className="object-cover" 
+                          unoptimized
+                        />
                       </button>
                     ))}
                   </div>

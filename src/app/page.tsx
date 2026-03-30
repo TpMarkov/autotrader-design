@@ -162,7 +162,7 @@ export default function AutoTrader() {
             <a href="#" className="hover:opacity-50 transition">Inventory</a>
             <a href="#" className="hover:opacity-50 transition">Sell</a>
             <a href="#" className="hover:opacity-50 transition">Finance</a>
-            <a href="#" className="hover:opacity-50 transition">About</a>
+            <Link href="/about" className="hover:opacity-50 transition">About</Link>
           </div>
 
           <button
@@ -278,11 +278,12 @@ export default function AutoTrader() {
                 <Link href={`/car/${car.id}`} className="block space-y-6">
                   <div className="relative aspect-[4/3] overflow-hidden bg-gray-100 rounded-sm">
                     {car.media?.photo_links?.[0] ? (
-                      <img
+                      <Image
                         src={car.media.photo_links[0]}
                         alt={car.heading}
-                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700"
-                        loading="lazy"
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                        unoptimized
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center text-gray-300">
@@ -484,7 +485,7 @@ export default function AutoTrader() {
             <div className="space-y-6">
               <h4 className="text-[10px] font-bold uppercase tracking-[0.2em]">Company</h4>
               <ul className="space-y-4 text-sm text-gray-400">
-                <li><a href="#" className="hover:text-black transition">Our Story</a></li>
+                <li><Link href="/about" className="hover:text-black transition">Our Story</Link></li>
                 <li><a href="#" className="hover:text-black transition">Careers</a></li>
                 <li><a href="#" className="hover:text-black transition">Press</a></li>
               </ul>
