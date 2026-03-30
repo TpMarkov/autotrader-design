@@ -1,0 +1,5 @@
+{
+  "name": "Marketcheck API Tester",
+  "description": "A tool to test and explore the Marketcheck API for vehicle data.",
+  "requestFramePermissions": []
+}
