@@ -32,37 +32,44 @@ export default function AboutPage() {
       </nav>
 
       {/* Hero Section */}
-      <header className="py-24 md:py-32 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tighter uppercase mb-8 leading-[0.9]">
-                See the Full Automotive Market With Clarity
-              </h1>
-              <p className="text-xl text-gray-500 max-w-xl leading-relaxed mb-12">
-                We bring real automotive market data to you — helping you find great cars, understand value, and make smarter decisions.
-              </p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              className="relative aspect-[4/3] overflow-hidden bg-gray-100"
-            >
-              <Image 
-                src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=1200"
-                alt="Sleek American cars on the road"
-                fill
-                className="object-cover"
-                priority
-                referrerPolicy="no-referrer"
-              />
-            </motion.div>
-          </div>
+      <header className="relative min-h-[80vh] flex items-center bg-black overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <Image 
+            src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=2400"
+            alt="Sleek American cars on the road"
+            fill
+            className="object-cover opacity-60"
+            priority
+            referrerPolicy="no-referrer"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80"></div>
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-4xl"
+          >
+            <h1 className="text-5xl md:text-8xl font-bold tracking-tighter uppercase text-white mb-8 leading-[0.9]">
+              See the Full <br />
+              <span className="text-white/40 italic lowercase tracking-normal font-normal serif">Automotive Market</span> <br />
+              With Clarity
+            </h1>
+            <p className="text-xl md:text-2xl text-white/70 max-w-2xl leading-relaxed mb-12 serif italic">
+              We bring real automotive market data to you — helping you find great cars, understand value, and make smarter decisions.
+            </p>
+            <div className="flex flex-wrap gap-6">
+              <Link 
+                href="/tester"
+                className="bg-white text-black px-10 py-5 font-bold uppercase text-xs tracking-widest hover:bg-gray-200 transition-all"
+              >
+                Explore Market Data
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </header>
 
