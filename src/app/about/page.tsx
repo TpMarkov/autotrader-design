@@ -96,19 +96,19 @@ export default function AboutPage() {
               {
                 title: "Find the Best Deals",
                 desc: "Instantly compare thousands of cars and discover deals that save you money.",
-                img: "https://images.unsplash.com/photo-1562141961-b5d185666060?auto=format&fit=crop&q=80&w=1200",
+                img: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=1200",
                 icon: <Search className="w-6 h-6" />
               },
               {
                 title: "Know the True Price",
                 desc: "Understand what a car is really worth before you buy or sell.",
-                img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&q=80&w=1200",
+                img: "https://images.unsplash.com/photo-1583121274602-3e2820bc6988?auto=format&fit=crop&q=80&w=1200",
                 icon: <TrendingUp className="w-6 h-6" />
               },
               {
                 title: "Make Confident Decisions",
                 desc: "Get clear, reliable insights so you never overpay or miss a great opportunity.",
-                img: "https://images.unsplash.com/photo-1551288049-bbda48658a7d?auto=format&fit=crop&q=80&w=1200",
+                img: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=1200",
                 icon: <CheckCircle2 className="w-6 h-6" />
               }
             ].map((item, idx) => (
@@ -222,7 +222,7 @@ export default function AboutPage() {
             <div className="lg:col-span-7 space-y-12">
               <div className="relative aspect-video overflow-hidden bg-gray-900">
                 <Image 
-                  src="https://images.unsplash.com/photo-1551288049-bbda48658a7d?auto=format&fit=crop&q=80&w=1200" 
+                  src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=1200" 
                   alt="Customer trust and satisfaction" 
                   fill
                   className="object-cover opacity-60"
@@ -276,7 +276,7 @@ export default function AboutPage() {
             <h3 className="text-5xl font-bold tracking-tighter uppercase">Visual Showcase</h3>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-8">
             <div className="relative aspect-[3/4] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
               <Image src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&q=80&w=1200" alt="Sports car" fill className="object-cover" />
             </div>
@@ -285,6 +285,12 @@ export default function AboutPage() {
             </div>
             <div className="relative aspect-[3/4] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
               <Image src="https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&q=80&w=1200" alt="Electric car" fill className="object-cover" />
+            </div>
+            <div className="relative aspect-[3/4] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 mt-12">
+              <Image src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=1200" alt="Luxury car interior" fill className="object-cover" />
+            </div>
+            <div className="relative aspect-[3/4] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
+              <Image src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&q=80&w=1200" alt="Convertible car on open road" fill className="object-cover" />
             </div>
           </div>
 
