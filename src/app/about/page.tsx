@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { 
   CheckCircle2, 
   CarFront,
@@ -25,6 +25,7 @@ export default function AboutPage() {
           
           <div className="hidden md:flex gap-8 text-[11px] font-bold uppercase tracking-[0.2em]">
             <Link href="/" className="hover:opacity-50 transition">Inventory</Link>
+            <Link href="/route-details" className="hover:opacity-50 transition">Shipping</Link>
             <Link href="/about" className="opacity-50">About</Link>
             <Link href="/tester" className="hover:opacity-50 transition">API Tester</Link>
           </div>

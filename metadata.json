@@ -1,5 +1,5 @@
 {
-  "name": "Marketcheck API Tester",
-  "description": "A tool to test and explore the Marketcheck API for vehicle data.",
+  "name": "Car Search Map Filter",
+  "description": "A car search interface featuring a reusable USA map filter component.",
   "requestFramePermissions": []
 }

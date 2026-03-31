@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Tag, SlidersHorizontal, CarFront, X, Loader2, ArrowRight, AlertCircle, Gauge, MapPin } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import { Tag, CarFront, Loader2, ArrowRight, AlertCircle, Gauge, MapPin } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { CarFilters } from "@/components/CarFilters";
 
 interface CarListing {
+// ... existing interface ...
   id: string;
   vin: string;
   heading: string;
@@ -37,7 +39,7 @@ export default function AutoTrader() {
   const [page, setPage] = useState(0);
 
   // Filters
-  const [filters, setFilters] = useState({
+  const [filters] = useState({
     make: "",
     model: "",
     year_min: "",
@@ -46,41 +48,6 @@ export default function AutoTrader() {
     body_type: "",
     car_type: "used"
   });
-
-  const [showFilters, setShowFilters] = useState(false);
-
-  // Makes & Models State
-  const [availableMakes, setAvailableMakes] = useState<{ MakeId: number, MakeName: string }[]>([]);
-  const [availableModels, setAvailableModels] = useState<{ Model_ID: number, Model_Name: string }[]>([]);
-  const [loadingModels, setLoadingModels] = useState(false);
-
-  // Fetch all worldwide makes on mount
-  useEffect(() => {
-    fetch("https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json")
-      .then(res => res.json())
-      .then(data => {
-        const sortedMakes = (data.Results || []).sort((a: { MakeName: string }, b: { MakeName: string }) => a.MakeName.localeCompare(b.MakeName));
-        setAvailableMakes(sortedMakes);
-      })
-      .catch(err => console.error("Failed to fetch makes:", err));
-  }, []);
-
-  // Fetch models whenever the selected make changes
-  useEffect(() => {
-    if (!filters.make) {
-      setAvailableModels([]);
-      return;
-    }
-    setLoadingModels(true);
-    fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMake/${filters.make}?format=json`)
-      .then(res => res.json())
-      .then(data => {
-        const sortedModels = (data.Results || []).sort((a: { Model_Name: string }, b: { Model_Name: string }) => a.Model_Name.localeCompare(b.Model_Name));
-        setAvailableModels(sortedModels);
-      })
-      .catch(err => console.error("Failed to fetch models:", err))
-      .finally(() => setLoadingModels(false));
-  }, [filters.make]);
 
   const fetchInventory = useCallback(async (isLoadMore = false) => {
     try {
@@ -131,21 +98,6 @@ export default function AutoTrader() {
     fetchInventory();
   }, [fetchInventory]);
 
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    if (name === "make") {
-      setFilters(prev => ({ ...prev, make: value, model: "" }));
-    } else {
-      setFilters(prev => ({ ...prev, [name]: value }));
-    }
-  };
-
-  const handleApplyFilters = (e: React.FormEvent) => {
-    e.preventDefault();
-    fetchInventory();
-    setShowFilters(false);
-  };
-
   return (
     <div className="min-h-screen bg-white text-black font-sans">
       {/* Navigation */}
@@ -159,24 +111,16 @@ export default function AutoTrader() {
           </Link>
 
           <div className="hidden md:flex gap-10 text-[11px] font-bold uppercase tracking-[0.2em]">
-            <a href="#" className="hover:opacity-50 transition">Inventory</a>
-            <a href="#" className="hover:opacity-50 transition">Sell</a>
-            <a href="#" className="hover:opacity-50 transition">Finance</a>
+            <Link href="/" className="hover:opacity-50 transition">Inventory</Link>
+            <Link href="/route-details" className="hover:opacity-50 transition">Shipping</Link>
             <Link href="/about" className="hover:opacity-50 transition">About</Link>
+            <Link href="/tester" className="hover:opacity-50 transition">API Tester</Link>
           </div>
-
-          <button
-            onClick={() => setShowFilters(true)}
-            className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] hover:opacity-50 transition"
-          >
-            <SlidersHorizontal className="w-4 h-4" />
-            <span>Filters</span>
-          </button>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative h-[80vh] overflow-hidden bg-black">
+      <section className="relative h-[60vh] overflow-hidden bg-black">
         <div className="absolute inset-0 opacity-60">
           <Image
             src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=2000"
@@ -211,6 +155,9 @@ export default function AutoTrader() {
           </motion.div>
         </div>
       </section>
+
+      {/* Search & Filters Bar */}
+      <CarFilters />
 
       {/* Main Content */}
       <main id="inventory" className="max-w-[1600px] mx-auto px-6 lg:px-12 py-24">
@@ -346,117 +293,6 @@ export default function AutoTrader() {
           </div>
         )}
       </main>
-
-      {/* Filter Sidebar */}
-      <AnimatePresence>
-        {showFilters && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowFilters(false)}
-              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60]"
-            />
-            <motion.aside
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed inset-y-0 right-0 w-full max-w-md bg-white z-[70] shadow-2xl p-12 overflow-y-auto"
-            >
-              <div className="flex justify-between items-center mb-16">
-                <h2 className="text-3xl font-bold tracking-tighter uppercase">Filters</h2>
-                <button onClick={() => setShowFilters(false)} className="p-2 hover:bg-gray-100 rounded-full transition">
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-
-              <form onSubmit={handleApplyFilters} className="space-y-10">
-                <div className="space-y-8">
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Condition</label>
-                    <select name="car_type" value={filters.car_type} onChange={handleFilterChange} className="w-full border-b border-gray-200 py-3 text-sm focus:border-black outline-none transition-colors appearance-none bg-transparent">
-                      <option value="">Any Condition</option>
-                      <option value="used">Used Cars</option>
-                      <option value="new">New Cars</option>
-                      <option value="certified">Certified Pre-Owned</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Make</label>
-                    <select
-                      name="make"
-                      value={filters.make}
-                      onChange={handleFilterChange}
-                      className="w-full border-b border-gray-200 py-3 text-sm focus:border-black outline-none transition-colors appearance-none bg-transparent"
-                      disabled={availableMakes.length === 0}
-                    >
-                      <option value="">Any Make</option>
-                      {availableMakes.map(m => (
-                        <option key={m.MakeId} value={m.MakeName}>{m.MakeName}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Model</label>
-                      {loadingModels && <Loader2 className="w-3 h-3 animate-spin text-gray-400" />}
-                    </div>
-                    <select
-                      name="model"
-                      value={filters.model}
-                      onChange={handleFilterChange}
-                      className="w-full border-b border-gray-200 py-3 text-sm focus:border-black outline-none transition-colors appearance-none bg-transparent disabled:opacity-30"
-                      disabled={!filters.make || availableModels.length === 0}
-                    >
-                      <option value="">{filters.make ? "Any Model" : "Select a Make first"}</option>
-                      {availableModels.map(m => (
-                        <option key={m.Model_ID} value={m.Model_Name}>{m.Model_Name}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-8">
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Min Year</label>
-                      <input type="number" name="year_min" placeholder="2015" value={filters.year_min} onChange={handleFilterChange} className="w-full border-b border-gray-200 py-3 text-sm focus:border-black outline-none transition-colors" />
-                    </div>
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Max Year</label>
-                      <input type="number" name="year_max" placeholder="2024" value={filters.year_max} onChange={handleFilterChange} className="w-full border-b border-gray-200 py-3 text-sm focus:border-black outline-none transition-colors" />
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Max Price ($)</label>
-                    <input type="number" name="price_max" placeholder="e.g. 50000" value={filters.price_max} onChange={handleFilterChange} className="w-full border-b border-gray-200 py-3 text-sm focus:border-black outline-none transition-colors" />
-                  </div>
-
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Body Type</label>
-                    <select name="body_type" value={filters.body_type} onChange={handleFilterChange} className="w-full border-b border-gray-200 py-3 text-sm focus:border-black outline-none transition-colors appearance-none bg-transparent">
-                      <option value="">Any Body Type</option>
-                      <option value="SUV">SUV</option>
-                      <option value="Sedan">Sedan</option>
-                      <option value="Pickup">Pickup</option>
-                      <option value="Coupe">Coupe</option>
-                      <option value="Convertible">Convertible</option>
-                      <option value="Wagon">Hatchback / Wagon</option>
-                    </select>
-                  </div>
-                </div>
-
-                <button type="submit" className="w-full bg-black text-white font-bold py-5 px-4 rounded-sm transition-all hover:bg-gray-900 uppercase text-[11px] tracking-[0.3em]">
-                  Apply Filters
-                </button>
-              </form>
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
 
       {/* Footer */}
       <footer className="border-t border-gray-100 py-24 bg-gray-50">
